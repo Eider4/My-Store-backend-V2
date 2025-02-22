@@ -1,0 +1,19 @@
+# Dependencias de Node.js
+node_modules/
+package-lock.json
+
+# Variables de entorno
+.env
+
+# Caché de logs y archivos temporales
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Directorios de compilación
+dist/
+build/
+
+# Configuración de editores de código
+.vscode/
+.idea/
