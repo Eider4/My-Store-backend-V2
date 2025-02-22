@@ -1,4 +1,6 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
+dotenv.config();
 // Configuración de la conexión a PostgreSQL
 const NAME_DATABASE = process.env.NAME_DATABASE_URL;
 const USER_DATABASE = process.env.USER_DATABASE_URL;
