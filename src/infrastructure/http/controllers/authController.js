@@ -116,13 +116,6 @@ export const confirmUser = async (req, res) => {
       .json({ message: "Error al confirmar usuario", error: error.message });
   }
 };
-// Función para iniciar sesión
-// import {
-//   CognitoIdentityProviderClient,
-//   InitiateAuthCommand,
-// } from "@aws-sdk/client-cognito-identity-provider";
-
-// const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -134,7 +127,7 @@ export const loginUser = async (req, res) => {
   }
 
   const params = {
-    AuthFlow: "USER_PASSWORD_AUTH",
+    AuthFlow: process.env.AUTH_FLOW,
     ClientId: CLIENT_ID,
     AuthParameters: {
       USERNAME: email,
