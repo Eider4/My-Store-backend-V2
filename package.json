@@ -27,7 +27,9 @@
     "multer-storage-cloudinary": "^4.0.0",
     "openid-client": "^5.7.0",
     "pg": "^8.13.3",
-    "sequelize": "^6.37.5"
+    "puppeteer": "^24.2.1",
+    "sequelize": "^6.37.5",
+    "stripe": "^17.6.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

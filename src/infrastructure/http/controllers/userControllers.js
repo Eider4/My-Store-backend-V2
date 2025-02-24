@@ -11,9 +11,13 @@ export const getUsersController = async (req, res) => {
 };
 
 export const getUserByIdController = async (req, res) => {
-  const { id } = req.params;
-  const user = await getUserById(id);
-  res.status(200).json(user);
+  try {
+    const { id } = req.params;
+    const user = await getUserById(id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "error en getUserByIdController" });
+  }
 };
 
 export const addUserController = async (req, res) => {
@@ -37,8 +41,10 @@ export const addUserController = async (req, res) => {
 };
 
 export const updateUserController = async (req, res) => {
-  const { id } = req.params;
-  const { user } = req.body;
-  const updated = await updateUser(id, user);
-  res.status(200).json(updated);
+  try {
+    const updated = await updateUser(req.body);
+    res.status(200).json(updated);
+  } catch (error) {
+    res.status(500).json({ message: "error en updateUserController" });
+  }
 };

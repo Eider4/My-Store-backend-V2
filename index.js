@@ -13,7 +13,8 @@ import cors from "cors";
 import authRoutes from "./src/infrastructure/http/routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import { syncModels } from "./src/infrastructure/db/config/config.js";
-
+import countPetitions from "./src/infrastructure/middlewares/count.js";
+import paymentIntentsRoutes from "./src/infrastructure/http/routes/paymentIntentsRoutes.js";
 const PORT = process.env.PORT || 5000;
 
 const app = express();
@@ -29,16 +30,18 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use("/user", userRoutes);
-app.use("/product", productRoutes);
-app.use("/cart", cartRoutes);
-app.use("/order", orderRoutes);
-app.use("/productInCart", productInCartRoutes);
-app.use("/productInOrder", productInOrderRoutes);
-app.use("/sale", saleRoutes);
-app.use("/upload", uploadRoutes);
+app.use("/user", countPetitions, userRoutes);
+app.use("/product", countPetitions, productRoutes);
+app.use("/cart", countPetitions, cartRoutes);
+app.use("/order", countPetitions, orderRoutes);
+app.use("/productInCart", countPetitions, productInCartRoutes);
+app.use("/productInOrder", countPetitions, productInOrderRoutes);
+app.use("/sale", countPetitions, saleRoutes);
+app.use("/upload", countPetitions, uploadRoutes);
 
-app.use("/auth", authRoutes);
+app.use("/auth", countPetitions, authRoutes);
+
+app.use("/payment-intents", countPetitions, paymentIntentsRoutes);
 
 // Start server
 app.listen(PORT, () => {

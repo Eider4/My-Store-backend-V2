@@ -2,6 +2,7 @@ import User from "../../../domain/User.js";
 
 class UserRepository {
   async getUserById(id) {
+    console.log("id", id);
     const user = await User.findByPk(id);
     return user;
   }
@@ -9,9 +10,9 @@ class UserRepository {
     const id = await User.create(user);
     return id;
   }
-  async updateUser(id, user) {
+  async updateUser(user) {
     const updated = await User.update(user, {
-      where: { id_user: id },
+      where: { id_user: user.id_user },
     });
     return updated;
   }

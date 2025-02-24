@@ -17,7 +17,7 @@ export const addUser = async (user) => {
   return id;
 };
 
-export const updateUser = async (id, user) => {
-  const updated = await userRepository.updateUser(id, user);
+export const updateUser = async (user) => {
+  const updated = await userRepository.updateUser(user);
   return updated;
 };
