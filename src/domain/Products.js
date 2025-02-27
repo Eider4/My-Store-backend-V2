@@ -16,10 +16,14 @@ const Product = sequelize.define(
     category: { type: DataTypes.STRING, allowNull: false },
     brand: { type: DataTypes.STRING, allowNull: false }, // Nombre de la marca
     warranty: { type: DataTypes.STRING, allowNull: false }, // Garantía
-    rating: { type: DataTypes.FLOAT, allowNull: true }, // Puntuación del producto (0-5) o null
+    rating: { type: DataTypes.ARRAY(DataTypes.FLOAT), allowNull: true }, // Puntuación del producto (0-5) o null
     launch_date: { type: DataTypes.DATE, allowNull: false }, // Fecha de lanzamiento
     origin: { type: DataTypes.STRING, allowNull: false },
     images: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false },
+    units: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     especificaciones: {
       type: DataTypes.JSON,
       allowNull: false,

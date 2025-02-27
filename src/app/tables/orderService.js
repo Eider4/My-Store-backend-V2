@@ -12,6 +12,10 @@ export const getOrderById = async (id) => {
   return order;
 };
 
+export const getOrderByTranferDataId = async (transferDataId) => {
+  const order = await orderRepository.getOrderByTranferDataId(transferDataId);
+  return order;
+};
 export const getOrdersFiltered = async (filter) => {
   const orders = await orderRepository.getOrdersFiltered(filter);
   return orders;

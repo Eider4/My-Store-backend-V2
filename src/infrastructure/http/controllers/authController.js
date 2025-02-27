@@ -5,7 +5,12 @@ import {
   InitiateAuthCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
+import dotenv from "dotenv";
+import UserRepository from "../../db/repositories/userRepository.js";
+import { getUserById } from "../../../app/tables/userService.js";
+dotenv.config();
 // Crear una instancia del cliente Cognito
 const client = new CognitoIdentityProviderClient({
   region: process.env.AWS_REGION,
@@ -63,11 +68,10 @@ export const registerUser = async (req, res) => {
 
   try {
     const data = await client.send(new SignUpCommand(params));
-
     res.status(201).json({
       message:
         "Usuario registrado correctamente. Verifique su correo para confirmar su cuenta.",
-      userId: data["$metadata"].requestId,
+      userId: data.UserSub,
     });
   } catch (err) {
     console.error("Error al registrar usuario en Cognito:", err);
@@ -107,7 +111,8 @@ export const confirmUser = async (req, res) => {
       .status(200)
       .json({
         message: "Usuario confirmado exitosamente",
-        userId: data["$metadata"].requestId,
+        userId: data.UserSub,
+        data,
       });
   } catch (error) {
     console.error("Error al confirmar usuario:", error);
@@ -132,7 +137,6 @@ export const loginUser = async (req, res) => {
     AuthParameters: {
       USERNAME: email,
       PASSWORD: password,
-      // Agrega SECRET_HASH solo si tu App Client lo requiere
       SECRET_HASH: calculateSecretHash(email),
     },
   };
@@ -140,11 +144,22 @@ export const loginUser = async (req, res) => {
   try {
     const data = await client.send(new InitiateAuthCommand(params));
 
+    // Decodificar el IdToken para obtener el ID del usuario
+    const decodedToken = jwt.decode(data.AuthenticationResult.IdToken);
+    const userId = decodedToken?.sub; // ID único del usuario en Cognito
+    const user = await getUserById(userId);
     res.status(200).json({
-      message: "Inicio de sesión exitoso",
-      accessToken: data.AuthenticationResult.AccessToken,
-      idToken: data.AuthenticationResult.IdToken,
-      refreshToken: data.AuthenticationResult.RefreshToken,
+      id_user: user.id_user,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      created_at: user.created_at,
+      dataAccess: {
+        message: "Inicio de sesión exitoso",
+        accessToken: data.AuthenticationResult.AccessToken,
+        idToken: data.AuthenticationResult.IdToken,
+        refreshToken: data.AuthenticationResult.RefreshToken,
+      },
     });
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
@@ -161,3 +176,49 @@ export const loginUser = async (req, res) => {
     res.status(401).json({ message: errorMessage, error: error });
   }
 };
+
+// export const loginUser = async (req, res) => {
+//   const { email, password } = req.body;
+
+//   if (!email || !password) {
+//     return res
+//       .status(400)
+//       .json({ message: "El correo y la contraseña son requeridos" });
+//   }
+
+//   const params = {
+//     AuthFlow: process.env.AUTH_FLOW,
+//     ClientId: CLIENT_ID,
+//     AuthParameters: {
+//       USERNAME: email,
+//       PASSWORD: password,
+//       // Agrega SECRET_HASH solo si tu App Client lo requiere
+//       SECRET_HASH: calculateSecretHash(email),
+//     },
+//   };
+
+//   try {
+//     const data = await client.send(new InitiateAuthCommand(params));
+
+//     res.status(200).json({
+//       message: "Inicio de sesión exitoso",
+//       accessToken: data.AuthenticationResult.AccessToken,
+//       idToken: data.AuthenticationResult.IdToken,
+//       refreshToken: data.AuthenticationResult.RefreshToken,
+//       data,
+//     });
+//   } catch (error) {
+//     console.error("Error al iniciar sesión:", error);
+
+//     let errorMessage = "Error desconocido";
+//     if (error.name === "NotAuthorizedException") {
+//       errorMessage = "Credenciales incorrectas";
+//     } else if (error.name === "UserNotFoundException") {
+//       errorMessage = "Usuario no encontrado";
+//     } else if (error.name === "UserNotConfirmedException") {
+//       errorMessage = "Usuario no confirmado. Verifica tu correo.";
+//     }
+
+//     res.status(401).json({ message: errorMessage, error: error });
+//   }
+// };

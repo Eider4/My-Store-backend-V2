@@ -4,12 +4,12 @@ import CartRepository from "./cartRepository.js";
 class ProductInCartRepository {
   async gatProductsInCartByIdUser(id_user) {
     const cartEstance = new CartRepository();
-    const { id_cart } = await cartEstance.getCartByIdUser(id_user);
-    if (!id_cart) {
+    const cart = await cartEstance.getCartByIdUser(id_user);
+    if (!cart) {
       return [];
     }
     const productInCart = await ProductInCart.findAll({
-      where: { id_cart: id_cart },
+      where: { id_cart: cart.id_cart },
     });
     return productInCart;
   }

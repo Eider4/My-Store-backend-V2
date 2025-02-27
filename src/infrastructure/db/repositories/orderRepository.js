@@ -9,6 +9,17 @@ class OrderRepository {
     const order = await Order.findByPk(id);
     return order;
   }
+
+  async getOrderByTranferDataId(transferDataId) {
+    const order = await Order.findOne({
+      where: {
+        transfer_data: {
+          id: transferDataId,
+        },
+      },
+    });
+    return order;
+  }
   //este metodo sirve para filtrar por fecha
   async getOrdersFiltered(filter) {
     const orders = await Order.findAll({
@@ -31,8 +42,9 @@ class OrderRepository {
     });
     return orders;
   }
+
   async addOrder(order) {
-    const [id] = await Order.create(order);
+    const id = await Order.create(order);
     return id;
   }
 }

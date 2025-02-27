@@ -56,8 +56,6 @@ export const deleteImages = async (req, res) => {
       const publicId = urlImage.split("/").pop();
       return publicId.split(".")[0];
     });
-    console.log("req.body", req.body);
-    console.log("publicIds", publicIds);
     if (!Array.isArray(publicIds) || publicIds.length === 0) {
       return res
         .status(400)

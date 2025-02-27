@@ -6,6 +6,18 @@ import Product from "./Products.js";
 const ProductInOrder = sequelize.define(
   "ProductInOrder",
   {
+    id_order: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: Order, key: "id" },
+      primaryKey: true, // Clave primaria compuesta
+    },
+    id_product: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: Product, key: "id" },
+      primaryKey: true, // Clave primaria compuesta
+    },
     quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
     unit_price: { type: DataTypes.FLOAT, allowNull: false },
     discount: { type: DataTypes.FLOAT, allowNull: true, defaultValue: 0 },

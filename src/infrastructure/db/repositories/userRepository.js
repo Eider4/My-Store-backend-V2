@@ -2,7 +2,6 @@ import User from "../../../domain/User.js";
 
 class UserRepository {
   async getUserById(id) {
-    console.log("id", id);
     const user = await User.findByPk(id);
     return user;
   }

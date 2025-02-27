@@ -6,7 +6,7 @@ class ProductInOrderRepository {
     return productInOrder;
   }
   async addProductInOrder(productInOrder) {
-    const [id] = await ProductInOrder.create(productInOrder);
+    const id = await ProductInOrder.create(productInOrder);
     return id;
   }
   async updateProductInOrder(id, productInOrder) {
