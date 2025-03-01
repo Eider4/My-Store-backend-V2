@@ -45,5 +45,5 @@ app.use("/payment-intents", countPetitions, paymentIntentsRoutes);
 
 // Start server
 app.listen(PORT, () => {
-  console.log("Server started on port http://localhost:" + PORT);
+  console.log(`Server started on port http://0.0.0.0:${PORT}`);
 });

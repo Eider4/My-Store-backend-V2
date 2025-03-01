@@ -46,23 +46,3 @@ const Product = sequelize.define(
 // 1. agregar la cantidad de productos disponibles en la tienda
 
 export default Product;
-
-const product = {
-  id_product: crypto.randomUUID(),
-  title: "Smartwatch",
-  description: "Smartwatch with AMOLED display and health monitoring.",
-  price: 199,
-  discount: 10,
-  category: "Electronics",
-  brand: "Samsung",
-  warranty: "2 years",
-  rating: "4.5",
-  release_date: "2023-06-15",
-  origin: "South Korea",
-  images: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
-  specifications: [
-    { title: "Water-resistant", description: "Yes" },
-    { title: "Material", description: "Stainless steel" },
-  ],
-  shipping: { free: true, cost: 0, estimated_time: "3 days" },
-};

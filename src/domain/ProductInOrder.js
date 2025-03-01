@@ -67,13 +67,3 @@ Product.belongsToMany(Order, {
 });
 
 export default ProductInOrder;
-
-const productInOrder = {
-  id_order: "foreign_key_order_id", // ID de la orden a la que pertenece el producto
-  id_product: "foreign_key_product_id", // ID del producto comprado
-  quantity: 2, // Cantidad de productos comprados
-  unit_price: 199, // Precio unitario del producto en el momento de la compra
-  discount: 10, // Porcentaje de descuento aplicado al producto
-  discounted_price: 179.1, // Precio después del descuento (unit_price * (1 - discount/100))
-  total_price: 358.2, // Precio total (quantity * discounted_price)
-};

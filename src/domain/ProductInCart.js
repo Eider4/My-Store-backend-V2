@@ -18,9 +18,3 @@ Product.belongsToMany(Cart, {
 });
 
 export default ProductInCart;
-
-const productInCart = {
-  id_cart: "foreign_key_cart_id",
-  id_product: "foreign_key_product_id",
-  quantity: 2,
-};

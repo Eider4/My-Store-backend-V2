@@ -24,13 +24,13 @@ Sale.belongsTo(Order, { foreignKey: "id_order" });
 
 export default Sale;
 
-const sale = {
-  id_sale: crypto.randomUUID(),
-  id_order: "foreign_key_order_id",
-  sale_date: new Date(),
-  total_amount: 199.99,
-  payment_method: "Credit Card",
-  shipping_status: "Shipped",
-  payment_status: "Paid",
-  created_at: new Date(),
-};
+// const sale = {
+//   id_sale: crypto.randomUUID(),
+//   id_order: "foreign_key_order_id",
+//   sale_date: new Date(),
+//   total_amount: 199.99,
+//   payment_method: "Credit Card",
+//   shipping_status: "Shipped",
+//   payment_status: "Paid",
+//   created_at: new Date(),
+// };

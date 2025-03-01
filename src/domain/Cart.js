@@ -17,10 +17,3 @@ const Cart = sequelize.define(
 Cart.belongsTo(User, { foreignKey: "id_user" });
 
 export default Cart;
-
-const cart = {
-  id_cart: crypto.randomUUID(),
-  id_user: "foreign_key_user_id",
-  created_at: new Date(),
-  updated_at: new Date(),
-};
