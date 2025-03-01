@@ -58,7 +58,7 @@ export const getPaymentIntent = async (req, res) => {
     const { paymentIntentId } = req.params;
     const data = req.body;
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
     const resp = await StripeClient.paymentIntents.retrieve(paymentIntentId);
