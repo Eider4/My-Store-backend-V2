@@ -60,8 +60,14 @@ export const getPaymentIntent = async (req, res) => {
 
     const browser = await puppeteer.launch({
       headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-gpu",
+        "--disable-dev-shm-usage",
+      ],
     });
+
     const page = await browser.newPage();
 
     const resp = await StripeClient.paymentIntents.retrieve(paymentIntentId);
