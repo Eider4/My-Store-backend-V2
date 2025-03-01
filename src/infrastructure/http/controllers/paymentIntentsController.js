@@ -1,8 +1,5 @@
 import Stripe from "stripe";
 import dotenv from "dotenv";
-import puppeteer from "puppeteer";
-import fs from "fs";
-import PDFDocument from "pdfkit";
 import pdf from "html-pdf-node";
 
 dotenv.config();
