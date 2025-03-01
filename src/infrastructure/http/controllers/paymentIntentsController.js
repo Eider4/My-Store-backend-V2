@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import dotenv from "dotenv";
-import pdf from "html-pdf-node";
-
+import puppeteer from "puppeteer";
+import fs from "fs";
 dotenv.config();
 
 export const StripeClient = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -58,9 +58,11 @@ export const getPaymentIntent = async (req, res) => {
     const { paymentIntentId } = req.params;
     const data = req.body;
 
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
     const resp = await StripeClient.paymentIntents.retrieve(paymentIntentId);
     const resp2 = await StripeClient.charges.retrieve(resp.latest_charge);
-
     const htmlContent = `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -220,10 +222,15 @@ export const getPaymentIntent = async (req, res) => {
 </body>
 </html>
 `;
-    const file = { content: htmlContent };
 
-    const pdfBuffer = await pdf.generatePdf(file, { format: "A4" });
+    await page.setContent(htmlContent);
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      margin: { top: "10mm", bottom: "10mm" },
+    });
 
+    await browser.close();
+    fs.writeFileSync("prueba.pdf", pdfBuffer);
     res.setHeader(
       "Content-Disposition",
       `attachment; filename=detalles-de-pago-${data.user.name}.pdf`
@@ -232,6 +239,6 @@ export const getPaymentIntent = async (req, res) => {
     res.end(pdfBuffer);
   } catch (error) {
     console.log("error", error);
-    res.status(500).json({ error: "Error al generar el PDF" });
+    res.status(500).json({ error: "Error al actualizar el pago" });
   }
 };
