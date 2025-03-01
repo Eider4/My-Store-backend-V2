@@ -4,7 +4,6 @@ import {
   getProductsFiltered,
   addProduct,
   updateProduct,
-  deleteProduct,
 } from "../../../app/tables/productService.js";
 
 export const getProductsController = async (req, res) => {
@@ -63,10 +62,4 @@ export const updateProductController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar producto" });
   }
-};
-
-export const deleteProductController = async (req, res) => {
-  const { id } = req.params;
-  const deleted = await deleteProduct(id);
-  res.status(200).json(deleted);
 };

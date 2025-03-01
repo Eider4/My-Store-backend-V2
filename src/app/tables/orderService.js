@@ -11,7 +11,14 @@ export const getOrderById = async (id) => {
   const order = await orderRepository.getOrderById(id);
   return order;
 };
-
+export const getOrdersByIdUser = async (user_id) => {
+  const order = await orderRepository.getOrdersByIdUser(user_id);
+  return order;
+};
+export const updateOrder = async (status, id_order) => {
+  const products = await orderRepository.updateOrder(status, id_order);
+  return products;
+};
 export const getOrderByTranferDataId = async (transferDataId) => {
   const order = await orderRepository.getOrderByTranferDataId(transferDataId);
   return order;

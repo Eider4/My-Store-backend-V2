@@ -6,7 +6,6 @@ const NAME_DATABASE = process.env.NAME_DATABASE_URL;
 const USER_DATABASE = process.env.USER_DATABASE_URL;
 const PASSWORD_DATABASE = process.env.PASSWORD_DATABASE_URL;
 const HOST_DATABASE = process.env.HOST_DATABASE_URL;
-const PORT_DATABASE = process.env.PORT_DATABASE_URL;
 
 export const sequelize = new Sequelize(
   NAME_DATABASE,
@@ -15,10 +14,16 @@ export const sequelize = new Sequelize(
   {
     host: HOST_DATABASE,
     dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true, // AWS RDS requiere SSL por defecto
+        rejectUnauthorized: false, // Permite certificados autofirmados
+      },
+    },
     logging: false, // Desactiva logs en consola
-    port: PORT_DATABASE,
   }
 );
+
 // Función para sincronizar modelos
 export const syncModels = async () => {
   try {

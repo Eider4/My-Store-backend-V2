@@ -1,14 +1,8 @@
 import {
-  getUsers,
   getUserById,
   addUser,
   updateUser,
 } from "../../../app/tables/userService.js";
-
-export const getUsersController = async (req, res) => {
-  const users = await getUsers();
-  res.status(200).json(users);
-};
 
 export const getUserByIdController = async (req, res) => {
   try {

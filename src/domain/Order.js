@@ -3,7 +3,7 @@ import { sequelize } from "../infrastructure/db/config/config.js";
 import User from "./User.js";
 
 const Order = sequelize.define(
-  "Order",
+  "Orders",
   {
     id_order: {
       type: DataTypes.UUID,
@@ -21,11 +21,23 @@ const Order = sequelize.define(
     order_date: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     total_amount: { type: DataTypes.FLOAT, allowNull: false },
     statuspayment: {
-      type: DataTypes.ENUM("Pending", "Processing", "Completed", "Failed"),
+      type: DataTypes.ENUM(
+        "Pending",
+        "Processing",
+        "Completed",
+        "Failed",
+        "succeeded"
+      ),
       defaultValue: "Pending",
     },
     status: {
-      type: DataTypes.ENUM("pending", "succeeded", "shipped", "delivered"),
+      type: DataTypes.ENUM(
+        "pending",
+        "succeeded",
+        "shipped",
+        "delivered",
+        "userCanceled"
+      ),
       defaultValue: "pending",
     },
     address: {

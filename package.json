@@ -28,6 +28,7 @@
     "openid-client": "^5.7.0",
     "pdfkit": "^0.16.0",
     "pg": "^8.13.3",
+    "pg-hstore": "^2.3.4",
     "puppeteer": "^24.2.1",
     "sequelize": "^6.37.5",
     "stream": "^0.0.3",

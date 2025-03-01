@@ -9,9 +9,19 @@ class ProductInOrderRepository {
     const id = await ProductInOrder.create(productInOrder);
     return id;
   }
-  async updateProductInOrder(id, productInOrder) {
+  async getProductsInOrder(id_order) {
+    const productsInOrder = await ProductInOrder.findAll({
+      where: { id_order: id_order },
+    });
+    return productsInOrder;
+  }
+  async updateProductInOrder(productInOrder) {
+    console.log("Esto es lo que le llegaaaaaaa ", productInOrder.status);
     const updated = await ProductInOrder.update(productInOrder, {
-      where: { id_product: id },
+      where: {
+        id_product: productInOrder.id_product,
+        id_order: productInOrder.id_order,
+      },
     });
     return updated;
   }

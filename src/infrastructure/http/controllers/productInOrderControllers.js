@@ -18,10 +18,16 @@ export const addProductInOrderController = async (req, res) => {
 };
 
 export const updateProductInOrderController = async (req, res) => {
-  const { id } = req.params;
-  const { productInOrder } = req.body;
-  const updated = await updateProductInOrder(id, productInOrder);
-  res.status(200).json(updated);
+  try {
+    const productInOrder = req.body;
+    // console.log("productInOrder", productInOrder);
+    const updated = await updateProductInOrder(productInOrder);
+    console.log("update ", updated);
+    res.status(200).json(updated);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ error: "Error al actualizar el producto" });
+  }
 };
 
 export const deleteProductInOrderController = async (req, res) => {

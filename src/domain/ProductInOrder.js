@@ -39,6 +39,20 @@ const ProductInOrder = sequelize.define(
         return discountedPrice * quantity;
       },
     },
+    status: {
+      type: DataTypes.ENUM(
+        "pending",
+        "succeeded",
+        "shipped",
+        "delivered",
+        "userCanceled"
+      ),
+      defaultValue: "pending",
+    },
+    envio: {
+      type: DataTypes.JSON,
+      allowNull: false,
+    },
   },
   { timestamps: false }
 );

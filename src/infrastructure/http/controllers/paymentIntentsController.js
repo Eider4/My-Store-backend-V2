@@ -11,7 +11,7 @@ export const createPaymentIntent = async (req, res) => {
     if (amount <= 0)
       return res.status(400).json({ error: "El monto no puede ser 0" });
     const { id, client_secret } = await StripeClient.paymentIntents.create({
-      amount: Math.round(amount * 100),
+      amount: Math.round(amount),
       currency,
     });
     res.status(200).json({
@@ -224,32 +224,19 @@ export const getPaymentIntent = async (req, res) => {
 `;
 
     await page.setContent(htmlContent);
-
-    // Generar el PDF
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: { top: "10mm", bottom: "10mm" },
     });
 
-    // console.log("Tamaño del PDF: en mb", pdfBuffer.length / 1024 / 1024);
-
     await browser.close();
-
-    // Guardar el PDF en el servidor para pruebas (opcional)
     fs.writeFileSync("prueba.pdf", pdfBuffer);
-
-    // Configurar y enviar la respuesta con el PDF
     res.setHeader(
       "Content-Disposition",
       `attachment; filename=detalles-de-pago-${data.user.name}.pdf`
     );
     res.setHeader("Content-Type", "application/pdf");
     res.end(pdfBuffer);
-
-    // res.status(200).json({
-    //   resp,
-    //   resp2,
-    // });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "Error al actualizar el pago" });

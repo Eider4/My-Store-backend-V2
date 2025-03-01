@@ -9,7 +9,14 @@ class OrderRepository {
     const order = await Order.findByPk(id);
     return order;
   }
-
+  async getOrdersByIdUser(user_id) {
+    const order = await Order.findAll({
+      where: {
+        id_user: user_id,
+      },
+    });
+    return order;
+  }
   async getOrderByTranferDataId(transferDataId) {
     const order = await Order.findOne({
       where: {
@@ -20,6 +27,24 @@ class OrderRepository {
     });
     return order;
   }
+  async updateOrder(status, id_order) {
+    const [updatedOrders] = await Order.update(
+      { status },
+      {
+        where: { id_order: id_order },
+        fields: ["status"],
+        returning: true,
+      }
+    );
+    if (!updatedOrders === 0) return null;
+    const order = await Order.findOne({
+      where: {
+        id_order: id_order,
+      },
+    });
+    return order;
+  }
+
   //este metodo sirve para filtrar por fecha
   async getOrdersFiltered(filter) {
     const orders = await Order.findAll({

@@ -8,7 +8,6 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
 import dotenv from "dotenv";
-import UserRepository from "../../db/repositories/userRepository.js";
 import { getUserById } from "../../../app/tables/userService.js";
 dotenv.config();
 // Crear una instancia del cliente Cognito
@@ -176,49 +175,3 @@ export const loginUser = async (req, res) => {
     res.status(401).json({ message: errorMessage, error: error });
   }
 };
-
-// export const loginUser = async (req, res) => {
-//   const { email, password } = req.body;
-
-//   if (!email || !password) {
-//     return res
-//       .status(400)
-//       .json({ message: "El correo y la contraseña son requeridos" });
-//   }
-
-//   const params = {
-//     AuthFlow: process.env.AUTH_FLOW,
-//     ClientId: CLIENT_ID,
-//     AuthParameters: {
-//       USERNAME: email,
-//       PASSWORD: password,
-//       // Agrega SECRET_HASH solo si tu App Client lo requiere
-//       SECRET_HASH: calculateSecretHash(email),
-//     },
-//   };
-
-//   try {
-//     const data = await client.send(new InitiateAuthCommand(params));
-
-//     res.status(200).json({
-//       message: "Inicio de sesión exitoso",
-//       accessToken: data.AuthenticationResult.AccessToken,
-//       idToken: data.AuthenticationResult.IdToken,
-//       refreshToken: data.AuthenticationResult.RefreshToken,
-//       data,
-//     });
-//   } catch (error) {
-//     console.error("Error al iniciar sesión:", error);
-
-//     let errorMessage = "Error desconocido";
-//     if (error.name === "NotAuthorizedException") {
-//       errorMessage = "Credenciales incorrectas";
-//     } else if (error.name === "UserNotFoundException") {
-//       errorMessage = "Usuario no encontrado";
-//     } else if (error.name === "UserNotConfirmedException") {
-//       errorMessage = "Usuario no confirmado. Verifica tu correo.";
-//     }
-
-//     res.status(401).json({ message: errorMessage, error: error });
-//   }
-// };

@@ -1,8 +1,19 @@
 import {
   addOrder,
+  getOrderById,
   getOrderByTranferDataId,
+  getOrdersByIdUser,
+  updateOrder,
 } from "../../../app/tables/orderService.js";
-import { addProductInOrder } from "../../../app/tables/productInOrderService.js";
+import {
+  addProductInOrder,
+  getProductsInOrder,
+} from "../../../app/tables/productInOrderService.js";
+import {
+  getProductById,
+  updateProduct,
+} from "../../../app/tables/productService.js";
+import { getUserById } from "../../../app/tables/userService.js";
 import { StripeClient } from "./paymentIntentsController.js";
 
 export const addOrderController = async (req, res) => {
@@ -45,18 +56,74 @@ export const addOrderController = async (req, res) => {
           quantity: product.quantity,
           unit_price: product.price,
           discount: product.discount,
+          envio: product.envio,
           discounted_price: product.price * (1 - product.discount / 100),
           total_price:
             product.price * (1 - product.discount / 100) * product.quantity,
         };
+        await updateProduct(product.id_product, {
+          ...product,
+          units: product.units - product.quantity,
+        });
         return await addProductInOrder(productInOrder);
       })
     );
-    res.status(200).json({ id: "jejeje bien", data, productInOrder });
+    res.status(200).json({ data, productInOrder });
   } catch (error) {
-    console.log("error", error.message);
+    console.log("error", error);
     res
       .status(500)
       .json({ menssage: "error al realizar peticion en addOrderController" });
+  }
+};
+
+export const getOrdersByIdUserController = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const orders = await getOrdersByIdUser(user_id);
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "error al obtener los productos" });
+  }
+};
+
+export const getOrderByIdController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await getOrderById(id);
+    const user = await getUserById(order.id_user);
+    const id_order = order.id_order;
+    const productsInOrder = await getProductsInOrder(id_order);
+    const productsState = productsInOrder.some(
+      (product) => product.status === "pending" || product.status === "shipped"
+    );
+    if (!productsState && order.status != "succeeded") {
+      const orderUpdate = await updateOrder("succeeded", id_order);
+      return res.status(200).json({ order: orderUpdate, user });
+    }
+    res.status(200).json({ order, user });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "error al obtener el producto" });
+  }
+};
+
+export const getProductsInOrderController = async (req, res) => {
+  try {
+    const { id_order } = req.params;
+    const productsInOrder = await getProductsInOrder(id_order);
+    const productsInOrderWithProduct = await Promise.all(
+      productsInOrder.map(async (productInOrder) => {
+        const product = await getProductById(productInOrder.id_product);
+        return {
+          ...productInOrder.dataValues,
+          title: product.title,
+          images: product.images,
+        };
+      })
+    );
+    res.status(200).json(productsInOrderWithProduct);
+  } catch (error) {
+    res.status(500).json({ message: "error al obtener los productos" });
   }
 };

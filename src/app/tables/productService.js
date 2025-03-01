@@ -26,8 +26,3 @@ export const updateProduct = async (id, product) => {
   const updated = await productRepository.updateProduct(id, product);
   return updated;
 };
-
-export const deleteProduct = async (id) => {
-  const deleted = await productRepository.deleteProduct(id);
-  return deleted;
-};

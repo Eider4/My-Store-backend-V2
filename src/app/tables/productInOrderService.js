@@ -13,10 +13,15 @@ export const addProductInOrder = async (productInOrder) => {
   const id = await productInOrderRepository.addProductInOrder(productInOrder);
   return id;
 };
+export const getProductsInOrder = async (id_order) => {
+  const productsInOrder = await productInOrderRepository.getProductsInOrder(
+    id_order
+  );
+  return productsInOrder;
+};
 
-export const updateProductInOrder = async (id, productInOrder) => {
+export const updateProductInOrder = async (productInOrder) => {
   const updated = await productInOrderRepository.updateProductInOrder(
-    id,
     productInOrder
   );
   return updated;
