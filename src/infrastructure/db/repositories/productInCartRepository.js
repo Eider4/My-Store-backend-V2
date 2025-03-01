@@ -14,8 +14,17 @@ class ProductInCartRepository {
     return productInCart;
   }
   async addProductInCart(productInCart) {
-    const id = await ProductInCart.create(productInCart);
-    return id;
+    const [product, created] = await ProductInCart.findOrCreate({
+      where: {
+        id_cart: productInCart.id_cart,
+        id_product: productInCart.id_product,
+      },
+      defaults: {
+        quantity: productInCart.quantity,
+      },
+    });
+
+    return product;
   }
 
   async deleteProductInCart(data) {

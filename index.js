@@ -22,7 +22,7 @@ syncModels();
 // Middlewares
 app.use(
   cors({
-    origin: "http://localhost:5001",
+    origin: "*",
     credentials: true,
   })
 );
