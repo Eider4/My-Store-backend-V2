@@ -20,12 +20,24 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 syncModels();
 // Middlewares
+const allowedOrigins = [
+  "http://localhost:5001",
+  "https://my-store-frontend-v2.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "*",
-    credentials: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("No permitido por CORS"));
+      }
+    },
+    credentials: true, // Permite enviar cookies o tokens
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
